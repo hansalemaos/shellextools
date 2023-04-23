@@ -2,7 +2,11 @@
 
 ## pip install shellextools 
 
-### Here is an example:
+### Here are 2 examples:
+
+https://github.com/hansalemaos/rc_collage
+
+[![](https://i.ytimg.com/vi/c9OouCauJ1Y/oar2.jpg?sqp=-oaymwEaCJUDENAFSFXyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLBa8cG36u-xxiLEfehP5JcSw_a89g)](https://www.youtube.com/shorts/c9OouCauJ1Y)
 
 https://github.com/hansalemaos/rc_pictools
 
