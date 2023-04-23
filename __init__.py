@@ -15,9 +15,6 @@ from flatten_any_dict_iterable_or_whatsoever import (
 from flatten_everything import flatten_everything
 from functools import reduce, partial
 from isiter import isiter
-from list_files_with_timestats import (
-    get_folder_file_complete_path,
-)
 from tolerant_isinstance import isinstance_tolerant
 from touchtouch import touch
 from typing import Union, List, Optional
@@ -28,13 +25,27 @@ import re
 import shutil
 import stat
 import tempfile
-from subprocess_alive import is_process_alive
-from subprocesskiller import get_pro_properties, subprocess_timeout, kill_process_children_parents, kill_subprocs, kill_pid
 from amiadmin import am_i_admin
 from downloadunzip import extract,copy_folder_to_another_folder,zip_folder,download_and_extract
 from list_all_files_recursively import get_folder_file_complete_path
 from reggisearch import search_values
 from ctypestoast import show_notification,show_notification_threaded
+from time import sleep as sleep_
+from math import floor
+
+
+def sleep(secs):
+    if secs == 0:
+        return
+    maxrange = 50 * secs
+    if isinstance(maxrange, float):
+        sleeplittle = floor(maxrange)
+        sleep_((maxrange - sleeplittle) / 50)
+        maxrange = int(sleeplittle)
+    if maxrange > 0:
+        for _ in range(maxrange):
+            sleep_(0.016)
+
 
 nested_dict = lambda: defaultdict(nested_dict)
 MB_OK = 0x0

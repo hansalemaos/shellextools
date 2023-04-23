@@ -4,11 +4,11 @@ downloadunzip
 escape_windows_filepath
 flatten_any_dict_iterable_or_whatsoever
 flatten_everything
+hackyargparser
 isiter
 list_all_files_recursively
-list_files_with_timestats
+lockexclusive
+ordered_set
 reggisearch
-subprocess_alive
-subprocesskiller
 tolerant_isinstance
 touchtouch
