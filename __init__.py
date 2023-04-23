@@ -118,6 +118,21 @@ allcontrols_s = (
 )
 
 
+def get_my_icon(iconfile="iconapp.ico"):
+    icon = os.path.dirname(sys.argv[0])
+    icon = os.path.normpath(os.path.join(icon,iconfile))
+    if os.path.exists(icon):
+        return icon
+    icon = os.path.dirname(__file__)
+    icon = os.path.normpath(os.path.join(icon,iconfile))
+    if os.path.exists(icon):
+        return icon
+    icon = os.sep.join(os.path.dirname(__file__).split(os.sep)[:-1])
+    icon = os.path.normpath(os.path.join(icon,iconfile))
+    if os.path.exists(icon):
+        return icon
+    return None
+
 class FlexiblePartialOwnName:
     r"""
     FlexiblePartial(
@@ -1312,7 +1327,7 @@ def create_menu_with_submenu_for_folders(
         shutil.copy(myfile, newpath)
     uninstalldata = f"\ndel {newpathescaped}\ndel {newpathuninstall}\n"
     if loopnumber == 0:
-        writemode = "w"
+        writemode = "a"
     else:
         writemode = "a"
     with open(newpathuninstall, mode=writemode, encoding="utf-8") as f:
@@ -1429,13 +1444,13 @@ def create_menu_with_submenu_for_specific_files(
     uninstalldatalist = []
     for fi in filetypes:
         for c in commandsrawdelete:
-            command2add = c.replace(rf"\.FTYPE{os.sep}", rf"\.{fi}{os.sep}")
+            command2add = c.replace(rf"\.FTYPE{os.sep}", rf"\.{fi.strip('. ')}{os.sep}")
             uninstalldatalist.append(command2add)
 
     commands = []
     for fi in filetypes:
         for c in commandsraw:
-            command2add = c.replace(rf"\.FTYPE{os.sep}", rf"\.{fi}{os.sep}")
+            command2add = c.replace(rf"\.FTYPE{os.sep}", rf"\.{fi.strip('. ')}{os.sep}")
             commands.append(command2add)
 
     for c in commands:
@@ -1446,7 +1461,7 @@ def create_menu_with_submenu_for_specific_files(
     uninstalldata = "\n".join(uninstalldatalist)
     finaldelete = f"\ndel {newpathescaped}\ndel {newpathuninstall}\n"
     if loopnumber == 0:
-        writemode = "w"
+        writemode = "a"
     else:
         writemode = "a"
     with open(newpathuninstall, mode=writemode, encoding="utf-8") as f:
