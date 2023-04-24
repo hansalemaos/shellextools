@@ -2,7 +2,11 @@
 
 ## pip install shellextools 
 
-### Here are 2 examples:
+### Here are 3 examples:
+
+https://github.com/hansalemaos/ripgrepgui
+
+[![](https://i.ytimg.com/vi/54XZXw1KOvQ/oar2.jpg?sqp=-oaymwEaCJUDENAFSFXyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLAsTyJc2bHqxjyDSqz29y_VQpVQ2A)](https://www.youtube.com/shorts/54XZXw1KOvQ)
 
 https://github.com/hansalemaos/rc_collage
 
