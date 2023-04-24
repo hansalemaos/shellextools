@@ -830,6 +830,66 @@ def create_folder_with_timestamp(
     return tsfile
 
 
+
+def get_filepath(exefile:str):
+    filepath = os.path.dirname(sys.argv[0])
+    fpa=os.path.normpath(os.path.join(filepath, exefile))
+    if os.path.exists(fpa):
+        filepath=fpa
+    else:
+        filepath = os.path.dirname(__file__)
+        fpa = os.path.normpath(os.path.join(filepath, exefile))
+        if os.path.exists(fpa):
+            filepath = fpa
+
+        else:
+            filepath = os.sep.join(os.path.dirname(sys.argv[0]).split(os.sep)[:-1])
+            fpa = os.path.normpath(os.path.join(filepath, exefile))
+            if os.path.exists(fpa):
+                filepath = fpa
+            else:
+                filepath = os.sep.join(os.path.dirname(__file__).split(os.sep)[:-1])
+                fpa = os.path.normpath(os.path.join(filepath, exefile))
+                if os.path.exists(fpa):
+                    filepath = fpa
+                else:
+                    fi = sys._getframe(1)
+                    dct = fi.f_globals
+                    f = dct.get("__file__", "")
+
+                    filepathpu = os.path.dirname(f)
+                    fpa = (os.path.join(filepathpu, exefile))
+                    if os.path.exists(fpa):
+                        filepath = fpa
+                    else:
+                        fpa=os.sep.join(os.path.dirname(filepathpu).split(os.sep)[:-1])
+                        fpa = os.path.normpath(os.path.join(fpa, exefile))
+                        if os.path.exists(fpa):
+                            filepath = fpa
+                        else:
+                            filepath=exefile
+    return filepath
+
+def get_monitors_resolution():
+    user32 = ctypes.windll.user32
+    def _get_monitors_resolution():
+        monitors = []
+        monitor_enum_proc = ctypes.WINFUNCTYPE(
+            ctypes.c_int, ctypes.c_ulong, ctypes.c_ulong, ctypes.POINTER(ctypes.wintypes.RECT), ctypes.c_double)
+        def callback(hMonitor, hdcMonitor, lprcMonitor, dwData):
+            monitors.append((lprcMonitor.contents.right - lprcMonitor.contents.left,
+                             lprcMonitor.contents.bottom - lprcMonitor.contents.top))
+            return 1
+        user32.EnumDisplayMonitors(None, None, monitor_enum_proc(callback), 0)
+        return monitors
+    resolutions = _get_monitors_resolution()
+    allmonitors = {}
+    for i, res in enumerate(resolutions):
+        allmonitors[i] = {'width': res[0], 'height': res[1]}
+    return allmonitors
+
+
+
 def execute_subprocess_multiple_commands_with_timeout_bin2(
     cmd: Union[list, str],
     subcommands: Union[list, tuple, None, str] = None,
