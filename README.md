@@ -2,7 +2,11 @@
 
 ## pip install shellextools 
 
-### Here are 3 examples:
+### Here are some examples:
+
+https://github.com/hansalemaos/fflist
+
+[![](https://i.ytimg.com/vi/SPcOx8M4Wqo/oar2.jpg)](https://www.youtube.com/shorts/SPcOx8M4Wqo)
 
 https://github.com/hansalemaos/ripgrepgui
 
