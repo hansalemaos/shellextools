@@ -1469,6 +1469,7 @@ def create_menu_with_submenu_for_specific_files(
     additional_arguments="",
     loopnumber=0,
 ):
+    filetypes=[x.strip() for x in filetypes]
     fileswritten = []
     if check_if_admin() == False:
         return 1
@@ -1481,19 +1482,23 @@ def create_menu_with_submenu_for_specific_files(
     additional_arguments = additional_arguments.strip()
     if additional_arguments:
         additional_arguments = f" {additional_arguments}"
+
     commandsraw = [
         rf"""%systemroot%\system32\Reg.exe add "HKCR\.FTYPE\shell\{mainmenuitem}" /v "MUIVerb" /t REG_SZ /d "{mainmenuitem}" /f""",
         rf"""%systemroot%\system32\Reg.exe add "HKCR\.FTYPE\shell\{mainmenuitem}" /v "SubCommands" /t REG_SZ /d "" /f""",
         rf"""%systemroot%\system32\Reg.exe add "HKCR\.FTYPE\shell\{mainmenuitem}\shell" /v "MUIVerb" /t REG_SZ /d "{submenu}" /f""",
+        rf"""%systemroot%\system32\Reg.exe add "HKCR\.FTYPE\shell\{mainmenuitem}\shell\{submenu}" /f""",
+        rf"""%systemroot%\system32\Reg.exe add "HKCR\.FTYPE\shell\{mainmenuitem}\shell\{submenu}\command" /ve /t REG_SZ /d "{newpathescaped} \"%1\"{additional_arguments}" /f""",
+
         rf"""%systemroot%\system32\Reg.exe add "HKCR\.FTYPE\shell\{mainmenuitem}\shell\{submenu}\command" /ve /t REG_SZ /d "{newpathescaped} \"%1\"{additional_arguments}" /f""",
         rf"""%systemroot%\system32\Reg.exe add "HKCR\SystemFileAssociations\.FTYPE\shell\{mainmenuitem}" /v "MUIVerb" /t REG_SZ /d "{mainmenuitem}" /f""",
         rf"""%systemroot%\system32\Reg.exe add "HKCR\SystemFileAssociations\.FTYPE\shell\{mainmenuitem}" /v "SubCommands" /t REG_SZ /d "" /f""",
         rf"""%systemroot%\system32\Reg.exe add "HKCR\SystemFileAssociations\.FTYPE\shell\{mainmenuitem}\shell" /v "MUIVerb" /t REG_SZ /d "{submenu}" /f""",
         rf"""%systemroot%\system32\Reg.exe add "HKCR\SystemFileAssociations\.FTYPE\shell\{mainmenuitem}\shell\{submenu}\command" /ve /t REG_SZ /d "\"{newpath}\" --path {addtocommand0}%1{addtocommand1}{additional_arguments}" /f""",
     ]
+
     commandsrawdelete = [
         rf"""%systemroot%\system32\Reg.exe delete "HKCR\.FTYPE\shell\{mainmenuitem}" /f""",
-
         rf"""%systemroot%\system32\Reg.exe delete "HKCR\.FTYPE\shell\{mainmenuitem}\shell" /f""",
         rf"""%systemroot%\system32\Reg.exe delete "HKCR\.FTYPE\shell\{mainmenuitem}\shell\{submenu}" /f""",
         rf"""%systemroot%\system32\Reg.exe delete "HKCR\SystemFileAssociations\.FTYPE\shell\{mainmenuitem}\shell\{submenu}" /f""",
@@ -1504,13 +1509,20 @@ def create_menu_with_submenu_for_specific_files(
     uninstalldatalist = []
     for fi in filetypes:
         for c in commandsrawdelete:
-            command2add = c.replace(rf"\.FTYPE{os.sep}", rf"\.{fi.strip('. ')}{os.sep}")
+            if fi !='*':
+                command2add = c.replace(rf"\.FTYPE{os.sep}", rf"\.{fi.strip('. ')}{os.sep}")
+            else:
+                command2add = c.replace(rf"\.FTYPE{os.sep}", rf"{os.sep}*{os.sep}")
+
             uninstalldatalist.append(command2add)
 
     commands = []
     for fi in filetypes:
         for c in commandsraw:
-            command2add = c.replace(rf"\.FTYPE{os.sep}", rf"\.{fi.strip('. ')}{os.sep}")
+            if fi != '*':
+                command2add = c.replace(rf"\.FTYPE{os.sep}", rf"\.{fi.strip('. ')}{os.sep}")
+            else:
+                command2add = c.replace(rf"\.FTYPE{os.sep}", rf"{os.sep}*{os.sep}")
             commands.append(command2add)
 
     for c in commands:
